@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Victim</title>
+
+    <style>
+        body {
+            font-size: 20px;
+            background: #b9c5e1;
+            text-align:center;
+            margin: 50px 0 0 0;
+        }
+        button {
+            font-size: 30px
+        }
+    </style>
+</head>
+<body>
+
+<h1> Victim :'(</h1>
+
+<h2>
+    Broj kupljenih predmeta: <span id="number">0</span>
+</h2>
+
+<h2>Poruka:</h2>
+<h2 id="message"></h2>
+
+<button  onclick="kupi()">KUPI</button>
+
+<script>
+    function kupi () {
+        const message = document.getElementById('message');
+        const number = document.getElementById('number');
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        fetch('/kupi', {
+            method: "POST",
+            body: JSON.stringify({}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                // https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#use-of-custom-request-headers
+                // The CSRF token can be added through hidden fields or headers
+
+                // Inserting the CSRF token in the custom HTTP request header via JavaScript is
+                // considered more secure than adding the token in the hidden field form parameter
+                // because it uses custom request headers.
+
+                // This defence relies on the same-origin policy (SOP) restriction
+                // that only JavaScript can be used to add a custom header, and only within its origin.
+                'CSRF-Token': token
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                message.innerHTML = data.msg;
+                if (data.kupljeno) {
+                    number.innerHTML = data.kupljeno
+                }
+            });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "csrf",
+  "version": "1.0.0",
+  "description": "CSRF demonstration and prevention",
+  "main": "index.js",
+  "scripts": {
+    "victim": "nodemon ./victim_website/server.js",
+    "attacker": "nodemon ./attacker_website/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nemanja997/csrf.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nemanja997/csrf/issues"
+  },
+  "homepage": "https://github.com/nemanja997/csrf#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "express": "^4.17.1"
+  }
+}
