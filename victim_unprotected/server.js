@@ -3,18 +3,8 @@ const fs = require('fs');
 const path = require("path");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const csrf = require('csurf');
 
 const PORT_NUMBER = 4000;
-
-// csurf --- { cookie: true } this defines CSRF token implementation strategy (when set to true it uses double-submit cookie)
-// used for stateless apps
-// https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
-
-// csurf --- { cookie: false } uses Synchronizer Token Pattern (for this to work user session on server is required)
-// used for statefull apps
-// https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern
-var csrfProtection = csrf({ cookie: true });
 
 // state
 let bought = 0;
@@ -32,7 +22,7 @@ app.use(express.json());
 // in practice, we should use this ONLY if we check the origin of the request and make sure its our 'whitelisted' origin
 app.use(cors({ credentials: true, origin: true }));
 
-app.get('/', csrfProtection, function(req, res) {
+app.get('/', function(req, res) {
     const expires = new Date(Date.now() + 900000);
 
     // httpOnly doesn't protect us from this attack, but sameSite cookie attribute does
@@ -43,18 +33,13 @@ app.get('/', csrfProtection, function(req, res) {
     });
 
     fs.readFile(path.resolve(__dirname, './index.html'), 'utf8', function (err,data) {
-        if (err) {
-            return console.log(err);
-        }
-        // inject CSRF token into HTML meta tag
-        data = `<meta content="${req.csrfToken()}" name="csrf-token" />` + data;
-
+        if (err) return console.log(err);
         res.send(data);
     });
 });
 
 // post route for buying stuff
-app.post('/buy', csrfProtection, function(req, res) {
+app.post('/buy', function(req, res) {
     // check user session
     if (req.cookies.SESSION_COOKIE === 'asd') {
         bought += 1;
