@@ -1,7 +1,7 @@
 # csrf
-CSRF demonstration and prevention
+CSRF demonstration and prevention.
 
-make sure you have `nodemon` installed globally to run the samples from this repo
+Make sure you have `nodemon` installed globally to run the samples from this repo
 
 1. Update **hosts** file with:
 ```
