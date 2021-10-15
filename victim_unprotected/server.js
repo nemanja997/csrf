@@ -26,9 +26,9 @@ app.get('/', function(req, res) {
     const expires = new Date(Date.now() + 900000);
 
     // httpOnly doesn't protect us from this attack, but sameSite does
-    res.cookie(`SESSION_COOKIE`,`n`, {
+    res.cookie(`SESSION_COOKIE`,`nemanja`, {
         expires,
-        httpOnly: true,
+        // httpOnly: true,
         // sameSite: true
     });
 
@@ -41,8 +41,8 @@ app.get('/', function(req, res) {
 // post route for buying stuff
 app.post('/buy', function(req, res) {
     // check user session
-    if (req.cookies.SESSION_COOKIE === 'n') {
-        ORDERS.push({ ...req.body, buyer: 'n' });
+    if (req.cookies.SESSION_COOKIE === 'nemanja') {
+        ORDERS.push({ ...req.body, buyer: 'nemanja' });
         res.json({status: 'success', msg: 'You ordered successfully!', payload: {
                 orders: ORDERS
             } })

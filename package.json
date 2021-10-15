@@ -4,7 +4,7 @@
   "description": "CSRF demonstration and prevention",
   "main": "index.js",
   "scripts": {
-    "victim-protected": "nodemon victim_protected_double_submit/server.js",
+    "victim-protected": "nodemon victim_protected/server.js",
     "victim-unprotected": "nodemon victim_unprotected/server.js",
     "attacker": "nodemon ./attacker_website/server.js"
   },
