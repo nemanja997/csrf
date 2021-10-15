@@ -12,4 +12,4 @@ Make sure you have `nodemon` installed globally to run the samples from this rep
 2. `npm run victim-protected` / `npm run victim-unprotected`
 3. `npm run attacker`
 
-4. Visit `victim.com:3000` and `attaker.com:3000`
+4. Visit `victim.com:4000` and `attaker.com:3000`

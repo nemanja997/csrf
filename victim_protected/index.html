@@ -96,10 +96,10 @@
         })
             .then(response => response.json())
             .then(data => {
-                items.innerHTML = '';
+                items.innerHTML = ''
                 data.payload.orders.forEach(order => {
                     items.innerHTML += `<div class="item">
-                                    <div>Buyer: <b>${order.user}</b></div>
+                                    <div>Buyer: <b>${order.buyer}</b></div>
                                     <div>Address: <b>${order.address}</b></div>
                                     <div>Item: <b>${order.item}</b></div>
                                 </div>`
