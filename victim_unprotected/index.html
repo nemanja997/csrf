@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Victim unprotected</title>
+    <title>Victim</title>
 
     <style>
         body {
@@ -15,40 +15,84 @@
             margin: 50px 0 0 0;
         }
         button {
-            font-size: 30px
+            font-size: 30px;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .orders {
+            width: 50%;
+        }
+
+        .messages {
+            width: 50%;
+        }
+
+        .items {
+            margin: auto;
+            width: 400px;
+        }
+        .item {
+            background: gray;
+            padding: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-<h1> Victim unprotected :'(</h1>
+<h1> Buy anything you want :'(</h1>
 
-<h2>
-    Number of items: <span id="number">0</span>
-</h2>
+<div class="container">
+    <div class="orders">
+        <h2>
+            My orders:
+        </h2>
 
-<h2>Message:</h2>
-<h2 id="message"></h2>
+        <div id="items" class="items">
 
-<button  onclick="kupi()">Buy</button>
+        </div>
+    </div>
+    <div class="messages">
+        <h2>Order:</h2>
+        <label for="">Item:</label>
+        <input id="item-input" type="text">
+        <label for="">Address:</label>
+        <input id="address-input" type="text">
+        <h2 id="message"></h2>
+        <button  onclick="kupi()">Order</button>
+    </div>
+</div>
 
 <script>
     function kupi () {
         const message = document.getElementById('message');
-        const number = document.getElementById('number');
+        const items = document.getElementById('items');
+        const item = document.getElementById('item-input');
+        const address = document.getElementById('address-input');
         fetch('/buy', {
             method: "POST",
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                item: item.value,
+                address: address.value
+            }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
             .then(response => response.json())
             .then(data => {
+                items.innerHTML = ''
+                data.payload.orders.forEach(order => {
+                    items.innerHTML += `<div class="item">
+                                    <div>Buyer: <b>${order.buyer}</b></div>
+                                    <div>Address: <b>${order.address}</b></div>
+                                    <div>Item: <b>${order.item}</b></div>
+                                </div>`
+                });
                 message.innerHTML = data.msg;
-                if (data.bought) {
-                    number.innerHTML = data.bought
-                }
             });
     }
 </script>

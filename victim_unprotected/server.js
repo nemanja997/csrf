@@ -7,7 +7,7 @@ const cors = require('cors');
 const PORT_NUMBER = 4000;
 
 // state
-let bought = 0;
+let ORDERS = [];
 
 const app = express();
 app.use(cookieParser());
@@ -25,10 +25,10 @@ app.use(cors({ credentials: true, origin: true }));
 app.get('/', function(req, res) {
     const expires = new Date(Date.now() + 900000);
 
-    // httpOnly doesn't protect us from this attack, but sameSite cookie attribute does
-    res.cookie(`SESSION_COOKIE`,`asd`, {
+    // httpOnly doesn't protect us from this attack, but sameSite does
+    res.cookie(`SESSION_COOKIE`,`n`, {
         expires,
-        // httpOnly: true,
+        httpOnly: true,
         // sameSite: true
     });
 
@@ -41,9 +41,11 @@ app.get('/', function(req, res) {
 // post route for buying stuff
 app.post('/buy', function(req, res) {
     // check user session
-    if (req.cookies.SESSION_COOKIE === 'asd') {
-        bought += 1;
-        res.json({status: 'success', msg: 'Congrats!', bought })
+    if (req.cookies.SESSION_COOKIE === 'n') {
+        ORDERS.push({ ...req.body, buyer: 'n' });
+        res.json({status: 'success', msg: 'You ordered successfully!', payload: {
+                orders: ORDERS
+            } })
     } else {
         res.json({status: 'failed', msg: 'User not logged in.'})
     }

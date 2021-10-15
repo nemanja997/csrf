@@ -17,11 +17,22 @@ const PORT_NUMBER = 4000;
 var csrfProtection = csurf({ cookie: true });
 
 // state
-let bought = 0;
+let ORDERS = [];
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+//
+// app.use(session({
+//     secret: '2C44-4D44-WppQ38S',
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: {
+//         // httpOnly doesn't protect us from this attack, but sameSite does
+//         httpOnly: true,
+//         // sameSite: true
+//     }
+// }));
 
 
 // { credentials: true } --- Access-Control-Allow-Credentials: true
@@ -36,7 +47,7 @@ app.get('/', csrfProtection, function(req, res) {
     const expires = new Date(Date.now() + 900000);
 
     // httpOnly doesn't protect us from this attack, but sameSite does
-    res.cookie(`SESSION_COOKIE`,`asd`, {
+    res.cookie(`SESSION_COOKIE`,`nemanja`, {
         expires,
         // httpOnly: true,
         // sameSite: true
@@ -56,9 +67,11 @@ app.get('/', csrfProtection, function(req, res) {
 // post route for buying stuff
 app.post('/buy', csrfProtection, function(req, res) {
     // check user session
-    if (req.cookies.SESSION_COOKIE === 'asd') {
-        bought += 1;
-        res.json({status: 'success', msg: 'Congrats!', bought })
+    if (req.cookies.SESSION_COOKIE === 'nemanja') {
+        ORDERS.push({ ...req.body, buyer: 'nemanja' });
+        res.json({status: 'success', msg: 'You ordered successfully!', payload: {
+                orders: ORDERS
+            } })
     } else {
         res.json({status: 'failed', msg: 'User not logged in.'})
     }
