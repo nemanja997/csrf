@@ -7,12 +7,12 @@ const csurf = require('csurf');
 
 const PORT_NUMBER = 4000;
 
-// csurf --- { cookie: true } this defines CSRF token implementation strategy (when set to true it uses double-submit cookie)
-// used for stateless apps
+// csurf --- { cookie: true } --- this defines CSRF token implementation strategy (when set to true it uses double-submit cookie)
+// used for STATELESS apps
 // https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#double-submit-cookie
 
-// csurf --- { cookie: false } uses Synchronizer Token Pattern (for this to work user session on server is required)
-// used for statefull apps
+// csurf --- { cookie: false } --- uses Synchronizer Token Pattern (for this to work user session on server is required)
+// used for STATEFULL apps
 // https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern
 var csrfProtection = csurf({ cookie: true });
 
@@ -35,7 +35,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.get('/', csrfProtection, function(req, res) {
     const expires = new Date(Date.now() + 900000);
 
-    // httpOnly doesn't protect us from this attack, but sameSite cookie attribute does
+    // httpOnly doesn't protect us from this attack, but sameSite does
     res.cookie(`SESSION_COOKIE`,`asd`, {
         expires,
         // httpOnly: true,

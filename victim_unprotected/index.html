@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Victim</title>
+    <title>Victim unprotected</title>
 
     <style>
         body {
@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h1> Victim :'(</h1>
+<h1> Victim unprotected :'(</h1>
 
 <h2>
     Number of items: <span id="number">0</span>
@@ -36,7 +36,6 @@
     function kupi () {
         const message = document.getElementById('message');
         const number = document.getElementById('number');
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch('/buy', {
             method: "POST",
             body: JSON.stringify({}),
